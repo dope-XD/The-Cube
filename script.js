@@ -1,22 +1,14 @@
- <script type="importmap">
-      {
-        "imports": {
-          "three": "https://cdn.jsdelivr.net/npm/three@0.167.1/build/three.module.js",
-          "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.167.1/examples/jsm/"
-        }
-      }
-    </script>
-import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { GUI } from 'three/addons/libs/lil-gui.module.min.js';
 import { FontLoader } from 'three/addons/loaders/FontLoader.js';
 import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
+import * as three from 'three';
 
 let camera, scene, renderer, cube, controls, isToppling = false;
-let toppleDirection = new THREE.Vector3();
-let toppleAxis = new THREE.Vector3();
+let toppleDirection = new three.Vector3();
+let toppleAxis = new three.Vector3();
 let toppleAngle = 0;
-let initialCubePosition = new THREE.Vector3();
+let initialCubePosition = new three.Vector3();
 let originalColor;
 let gui;
 let mouseX = 0;
@@ -30,38 +22,38 @@ let isTextRotating = false;
 let textRotationSpeed = 0.01;
 let textRotationX = 0;
 let textRotationY = 0;
-let textPosition = new THREE.Vector3(0, 1.5, 0)
+let textPosition = new three.Vector3(0, 1.5, 0)
 
 
 function init() {
-    scene = new THREE.Scene();
+    scene = new three.Scene();
 
-    camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera = new three.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
     camera.position.set(0, 2, 5);
 
-    renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer = new three.WebGLRenderer({ antialias: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setClearColor(0x000000);
     document.body.appendChild(renderer.domElement);
 
 
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
+    const ambientLight = new three.AmbientLight(0xffffff, 0.2);
     scene.add(ambientLight);
 
    const lightPositions = [
-        new THREE.Vector3(5, 5, 5),
-        new THREE.Vector3(-5, 5, 5),
-        new THREE.Vector3(5, 5, -5),
-        new THREE.Vector3(-5, 5, -5),
-         new THREE.Vector3(5, -5, 5),
-        new THREE.Vector3(-5, -5, 5),
-        new THREE.Vector3(5, -5, -5),
-        new THREE.Vector3(-5, -5, -5),
+        new three.Vector3(5, 5, 5),
+        new three.Vector3(-5, 5, 5),
+        new three.Vector3(5, 5, -5),
+        new three.Vector3(-5, 5, -5),
+         new three.Vector3(5, -5, 5),
+        new three.Vector3(-5, -5, 5),
+        new three.Vector3(5, -5, -5),
+        new three.Vector3(-5, -5, -5),
     ];
 
 
     lightPositions.forEach(position => {
-        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.2);
+        const directionalLight = new three.DirectionalLight(0xffffff, 0.2);
         directionalLight.position.copy(position);
         scene.add(directionalLight);
          directionalLight.castShadow = true;
@@ -79,8 +71,8 @@ function init() {
 
 
 
-    const geometry = new THREE.BoxGeometry(1, 1, 1);
-    const material = new THREE.MeshStandardMaterial({
+    const geometry = new three.BoxGeometry(1, 1, 1);
+    const material = new three.MeshStandardMaterial({
         color: 0x54c987,
         metalness: 0.9,
         roughness: 0.2,
@@ -88,7 +80,7 @@ function init() {
     });
     originalColor = material.color.clone()
 
-    cube = new THREE.Mesh(geometry, material);
+    cube = new three.Mesh(geometry, material);
     scene.add(cube);
 
      cube.castShadow = true;
@@ -103,7 +95,7 @@ function init() {
 
 
     renderer.shadowMap.enabled = true;
-    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.shadowMap.type = three.PCFSoftShadowMap;
 
 
     window.addEventListener('resize', onWindowResize, false);
@@ -152,14 +144,14 @@ function init() {
             bevelOffset: 0,
             bevelSegments: 5
         });
-             const bigTextMaterial = new THREE.MeshStandardMaterial({
+             const bigTextMaterial = new three.MeshStandardMaterial({
             color: 0xaaaaaa,
             metalness: 0.9,
             roughness: 0.2,
             envMapIntensity: 1
         });
 
-         bigTextMesh = new THREE.Mesh(bigTextGeometry, bigTextMaterial);
+         bigTextMesh = new three.Mesh(bigTextGeometry, bigTextMaterial);
          bigTextMesh.geometry.center();
          bigTextMesh.position.set(0, 2.5, 0);
          scene.add(bigTextMesh);
@@ -176,14 +168,14 @@ function init() {
             bevelOffset: 0,
             bevelSegments: 5
         });
-             const textMaterial = new THREE.MeshStandardMaterial({
+             const textMaterial = new three.MeshStandardMaterial({
             color: 0xaaaaaa,
             metalness: 0.9,
             roughness: 0.2,
             envMapIntensity: 1
         });
 
-        textMesh = new THREE.Mesh(textGeometry, textMaterial);
+        textMesh = new three.Mesh(textGeometry, textMaterial);
          textMesh.geometry.center();
          textMesh.position.copy(textPosition);
         scene.add(textMesh);
@@ -196,7 +188,7 @@ function init() {
         controls.update();
 
 
-       frontLight = new THREE.DirectionalLight(0xffffff, 1);
+       frontLight = new three.DirectionalLight(0xffffff, 1);
        frontLight.position.set(0,0,3)
         scene.add(frontLight);
         
@@ -227,12 +219,12 @@ function onWindowResize() {
 function onCubeClick(event) {
     if (isToppling) return;
      controls.enableRotate = false;
-    const mouse = new THREE.Vector2();
+    const mouse = new three.Vector2();
     mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
     mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
 
-    const raycaster = new THREE.Raycaster();
+    const raycaster = new three.Raycaster();
     raycaster.setFromCamera(mouse, camera);
 
     const intersects = raycaster.intersectObject(cube);
@@ -244,7 +236,7 @@ function onCubeClick(event) {
         toppleDirection.copy(clickPointWorld).sub(cube.position).normalize();
 
 
-        toppleAxis.copy(toppleDirection).cross(new THREE.Vector3(0, 1, 0)).normalize();
+        toppleAxis.copy(toppleDirection).cross(new three.Vector3(0, 1, 0)).normalize();
 
         toppleAngle = 0;
         isToppling = true;
@@ -260,7 +252,7 @@ function updateTopple(){
 
         if(toppleAngle < Math.PI / 2){
 
-        const rotationMatrix = new THREE.Matrix4().makeRotationAxis(toppleAxis, toppleSpeed);
+        const rotationMatrix = new three.Matrix4().makeRotationAxis(toppleAxis, toppleSpeed);
 
         cube.position.sub(initialCubePosition)
         cube.position.applyMatrix4(rotationMatrix);
@@ -280,10 +272,10 @@ function updateTopple(){
     }
 }
 function onTextMouseDown(event){
-    const mouse = new THREE.Vector2();
+    const mouse = new three.Vector2();
     mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
     mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-      const raycaster = new THREE.Raycaster();
+      const raycaster = new three.Raycaster();
     raycaster.setFromCamera(mouse, camera);
 
     const intersects = raycaster.intersectObject(textMesh);
