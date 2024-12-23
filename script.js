@@ -1,4 +1,3 @@
-// script.js
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { GUI } from 'three/addons/libs/lil-gui.module.min.js';
@@ -336,6 +335,3 @@ function resetCubeColor() {
 
 init();
 animate();
-
-// Export the functions if you want to call them from another module
-export { changeCubeColor, resetCubeColor };
